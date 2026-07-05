@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SleeveTechs — Business Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #1a0a8a;
+      --magenta: #e91e8c;
+      --dark: #1a1a2e;
+      --gray: #6b7280;
+      --light-gray: #f5f5f7;
+      --card-bg: #fdf4ff;
+      --card-border: #f0e6f6;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #e5e5e5;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* ── Navigation ── */
+    .controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+    .controls button {
+      width: 40px; height: 40px; border-radius: 50%; border: none;
+      background: rgba(26,10,138,0.9); color: white; font-size: 16px;
+      cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center;
+    }
+    .controls button:hover { background: var(--magenta); }
+    .controls .counter {
+      background: rgba(26,10,138,0.9); color: white; border-radius: 20px;
+      padding: 0 14px; height: 40px; display: flex; align-items: center;
+      font-size: 12px; font-weight: 600; letter-spacing: 1px;
+    }
+
+    /* ── Slide Container ── */
+    .deck { height: 100vh; width: 100vw; position: relative; }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      padding: 50px 80px 40px;
+      opacity: 0; transform: scale(0.98);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      background: white;
+      overflow: hidden;
+    }
+    .slide.active { opacity: 1; transform: scale(1); pointer-events: auto; }
+
+    /* ── Corner Stripes ── */
+    .corner-tl, .corner-br { position: absolute; pointer-events: none; z-index: 1; }
+    .corner-tl { top: -20px; left: -20px; width: 120px; height: 200px; }
+    .corner-br { bottom: -20px; right: -20px; width: 120px; height: 200px; transform: rotate(180deg); }
+    .stripe-blue { stroke: var(--blue); stroke-width: 14; fill: none; stroke-linecap: round; }
+    .stripe-magenta { stroke: var(--magenta); stroke-width: 14; fill: none; stroke-linecap: round; }
+
+    /* ── Tag pill ── */
+    .tag {
+      display: inline-block;
+      padding: 8px 24px;
+      border-radius: 24px;
+      background: #eef0ff;
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 16px;
+      z-index: 2;
+    }
+
+    /* ── Titles ── */
+    .title {
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 900;
+      color: var(--dark);
+      text-align: center;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      z-index: 2;
+    }
+    .title .highlight { color: var(--magenta); }
+    .subtitle {
+      font-size: clamp(14px, 1.6vw, 17px);
+      color: var(--gray);
+      text-align: center;
+      max-width: 600px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+      z-index: 2;
+    }
+
+    /* ── Stats row ── */
+    .stats-row {
+      display: flex;
+      gap: 0;
+      z-index: 2;
+      margin-bottom: 32px;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 16px 36px;
+      border-right: 1px solid #e5e7eb;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--blue), var(--magenta));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: var(--gray);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    /* ── Grid layouts ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; z-index: 2; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; z-index: 2; }
+    .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%; z-index: 2; }
+
+    /* ── About: Story card ── */
+    .story-card {
+      background: linear-gradient(135deg, #fdf4ff, #fce7f3);
+      border-radius: 20px;
+      padding: 32px;
+      height: 100%;
+    }
+    .story-card h3 {
+      font-size: 20px; font-weight: 800; color: var(--blue); margin-bottom: 16px;
+    }
+    .story-card p {
+      font-size: 14px; color: var(--dark); line-height: 1.7; margin-bottom: 12px;
+    }
+
+    /* ── Timeline vertical ── */
+    .timeline { margin-top: 20px; }
+    .timeline-item {
+      display: flex; align-items: flex-start; gap: 16px; position: relative;
+      padding-bottom: 20px;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-item::before {
+      content: '';
+      position: absolute; left: 17px; top: 36px; bottom: 0;
+      width: 3px; background: linear-gradient(180deg, var(--blue), var(--magenta));
+      border-radius: 2px;
+    }
+    .timeline-item:last-child::before { display: none; }
+    .timeline-dot {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--magenta));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 11px; font-weight: 800; flex-shrink: 0;
+    }
+    .timeline-content h4 { font-size: 15px; font-weight: 700; color: var(--dark); }
+    .timeline-content p { font-size: 12px; color: var(--gray); }
+
+    /* ── Values grid ── */
+    .value-pill {
+      display: flex; align-items: center; gap: 12px;
+      background: white; border: 1px solid #e5e7eb; border-radius: 12px;
+      padding: 14px 18px;
+    }
+    .value-dot {
+      width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--blue), var(--magenta));
+    }
+    .value-pill h4 { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .value-pill p { font-size: 12px; color: var(--gray); }
+
+    /* ── Services numbered list ── */
+    .services-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px 48px;
+      width: 100%; z-index: 2;
+    }
+    .service-row {
+      display: flex; align-items: center; gap: 20px;
+    }
+    .service-num {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 18px; font-weight: 800; flex-shrink: 0;
+    }
+    .service-line {
+      width: 40px; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--magenta));
+      border-radius: 2px; flex-shrink: 0;
+    }
+    .service-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--magenta); flex-shrink: 0;
+    }
+    .service-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 18px 22px;
+      flex: 1;
+    }
+    .service-card h3 {
+      font-size: 15px; font-weight: 700; color: var(--blue); margin-bottom: 4px;
+    }
+    .service-card p {
+      font-size: 12px; color: var(--gray); line-height: 1.5;
+    }
+
+    /* ── Vertical connector line between service rows ── */
+    .service-connector {
+      position: relative;
+    }
+    .service-connector::after {
+      content: '';
+      position: absolute;
+      left: 25px;
+      top: 52px;
+      bottom: -24px;
+      width: 3px;
+      background: linear-gradient(180deg, var(--blue), var(--magenta));
+      border-radius: 2px;
+    }
+    .service-connector:last-child::after { display: none; }
+
+    /* ── Web Dev hub spoke ── */
+    .hub-container {
+      position: relative;
+      width: 100%; max-width: 900px;
+      height: 480px;
+      z-index: 2;
+      margin: 0 auto;
+    }
+    .hub-center {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: #111;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 40px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+    .spoke {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 180px;
+    }
+    .spoke-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; color: white; margin-bottom: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .spoke h4 { font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+    .spoke p { font-size: 11px; color: var(--gray); line-height: 1.4; }
+    .spoke-line {
+      position: absolute;
+      height: 3px;
+      transform-origin: left center;
+      border-radius: 2px;
+      z-index: 1;
+    }
+
+    /* ── Testimonial ── */
+    .testimonial-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 28px;
+    }
+    .stars { color: var(--magenta); font-size: 16px; margin-bottom: 12px; letter-spacing: 2px; }
+    .quote { font-size: 14px; line-height: 1.7; color: var(--dark); margin-bottom: 16px; font-style: italic; }
+    .author { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .role { font-size: 12px; color: var(--gray); }
+
+    /* ── CTA slide ── */
+    .cta-contact {
+      display: flex; gap: 40px; z-index: 2; margin-top: 32px;
+    }
+    .cta-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px 36px;
+      text-align: center;
+    }
+    .cta-box .icon { font-size: 28px; margin-bottom: 8px; }
+    .cta-box .label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--gray); margin-bottom: 4px; }
+    .cta-box .value { font-size: 15px; font-weight: 700; color: var(--dark); }
+
+    /* ── Slide number ── */
+    .slide-num {
+      position: absolute; bottom: 20px; right: 40px;
+      font-size: 11px; font-weight: 600; color: #d1d5db; letter-spacing: 2px; z-index: 2;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { background: white; overflow: visible; }
+      .controls { display: none; }
+      .deck { height: auto; }
+      .slide { position: relative; opacity: 1; transform: none; pointer-events: auto; page-break-after: always; height: 100vh; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ═══════════ SLIDE 1 — COVER ═══════════ -->
+  <div class="slide active" data-slide="1">
+    <svg class="corner-tl" viewBox="0 0 120 200"><line x1="10" y1="180" x2="60" y2="10" class="stripe-blue"/><line x1="24" y1="180" x2="74" y2="10" class="stripe-magenta"/></svg>
+    <svg class="corner-br" viewBox="0 0 120 200"><line x1="10" y1="180" x2="60" y2="10" class="stripe-blue"/><line x1="24" y1="180" x2="74" y2="10" class="stripe-magenta"/></svg>
+
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;">
+      <img src="src/assets/logo.png" alt="SleeveTechs" style="height:80px;margin-bottom:20px;object-fit:contain;" />
+      <p style="font-size:17px;color:var(--gray);font-style:italic;letter-spacing:1px;">Fueling tech driven profitability</p>
+    </div>
+
+    <div class="stats-row" style="z-index:2;margin-bottom:0;">
+      <div class="stat-item"><div class="stat-num">10+</div><div class="stat-label">years</div></div>
+      <div class="stat-item"><div class="stat-num">200+</div><div class="stat-label">Projects</div></div>
+      <div class="stat-item"><div class="stat-num">50+</div><div class="stat-label">Audits</div></div>
+      <div class="stat-item"><div class="stat-num">99%</div><div class="stat-label">Satisfaction</div></div>
+    </div>
+    <div class="slide-num">01</div>
+  </div>
+
+  <!-- ═══════════ SLIDE 2 — ABOUT ═══════════ -->
+  <div class="slide" data-slide="2">
+    <svg class="corner-tl" viewBox="0 0 120 200"><line x1="10" y1="180" x2="60" y2="10" class="stripe-blue"/><line x1="24" y1="180" x2="74" y2="10" class="stripe-magenta"/></svg>
+    <svg class="corner-br" viewBox="0 0 120 200"><line x1="10" y1="180" x2="60" y2="10" class="stripe-blue"/><line x1="24" y1="180" x2="74" y2="10" class="stripe-magenta"/></svg>
+
+    <div class="tag">Who We Are</div>
+    <h2 class="title">About <span class="highlight">Sleevetechs</span></h2>
+    <p class="subtitle">A decade of technology excellence — from cybersecurity roots to full-spectrum digital solutions.</p>
+
+    <div class="grid-2" style="flex:1;min-height:0;">
+      <!-- Left: Story -->
+      <div class="story-card">
+        <h3>Our Story</h3>
+        <p>From securing digital assets to crafting exceptional web experiences, SleeveTechs has evolved to meet the ever-changing demands of the digital landscape.</p>
+        <p>Founded in 2015 as a cybersecurity consultancy, we have grown into a comprehensive technology partner.</p>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot">2015</div>
+            <div class="timeline-content">
+              <h4>Founded</h4>
+              <p>Cybersecurity consultancy</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">2019</div>
+            <div class="timeline-content">
+              <h4>Expanded</h4>
+              <p>ERP, RPA & vCIO services</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">2025</div>
+            <div class="timeline-content">
+              <h4>Web Dev Era</h4>
+              <p>Full Stack web development</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Stats + Values -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="grid-4">
+          <div class="card" style="text-align:center;padding:20px;">
+            <div class="stat-num" style="font-size:32px;">10+</div>
+            <div class="stat-label">years</div>
+          </div>
+          <div class="card" style="text-align:center;padding:20px;">
+            <div class="stat-num" style="font-size:32px;">200+</div>
+            <div class="stat-label">Projects</div>
+          </div>
+          <div class="card" style="text-align:center;padding:20px;">
+            <div class="stat-num" style="font-size:32px;">50+</div>
+            <div class="stat-label">Audits</div>
+          </div>
+          <div class="card" style="text-align:center;padding:20px;">
+            <div class="stat-num" style="font-size:32px;">99%</div>
+            <div class="stat-label">Satisfaction</div>
+          </div>
+        </div>
+        <div class="grid-4">
+          <div class="value-pill"><div class="value-dot"></div><div><h4>Passion</h4><p>Tech is our passion</p></div></div>
+          <div class="value-pill"><div class="value-dot"></div><div><h4>Precision</h4><p>Meticulous attention</p></div></div>
+          <div class="value-pill"><div class="value-dot"></div><div><h4>Innovation</h4><p>Cutting-edge solutions</p></div></div>
+          <div class="value-pill"><div class="value-dot"></div><div><h4>Partnership</h4><p>Your success is ours</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">02</div>
+  </div>
+
+  <!-- ═══════════ SLIDE 3 — SERVICES ═══════════ -->
+  <div class="slide" data-slide="3">
+    <svg class="corner-tl" viewBox="0 0 120 200"><line x1="10" y1="180" x2="60" y2="10" class="stripe-blue"/><line x1="24" y1="180" x2="74" y2="10" class="stripe-magenta"/></svg>
+    <svg class="corner-br" viewBox="0 0 120 200"><line x1="10" y1="180" x2="60" y2="10" class="stripe-blue"/><line x1="24" y1="180" x2="74" y2="10" class="stripe-magenta"/></svg>
+
+    <div class="tag">What We Do</div>
+    <h2 class="title">Our Core Services</h2>
+    <p class="subtitle">Comprehensive technology solutions tailored to transform your business operations.</p>
+
+    <div class="services-grid">
+      <!-- Row 1 -->
+      <div class="service-row service-connector">
+        <div class="service-num">01</div>
+        <div class="service-line"></div>
+        <div class="service-dot"></div>
+        <div class="service-card">
+          <h3>Technology Consulting</h3>
+          <p>Strategic tech guidance — Strategy, Execution & Audit for maximum ROI.</p>
+        </div>
+      </div>
+      <div class="service-row service-connector">
+        <div class="service-num">04</div>
+        <div class="service-line"></div>
+        <div class="service-dot"></div>
+        <div class="service-card">
+          <h3>vCIO Services</h3>
+          <p>C-level technology leadership without the full-time cost. Board-level advisory.</p>
+        </div>
+      </div>
+      <!-- Row 2 -->
+      <div class="service-row service-connector">
+        <div class="service-num">02</div>
+        <div class="service-line"></div>
+        <div class="service-dot"></div>
+        <div class="service-card">
+          <h3>Cyber Security</h3>
+          <p>End-to-end security with CISSP-certified experts. Penetration testing to incident response.</p>
+        </div>
+      </div>
+      <div class="service-row service-connector">
+        <div class="service-num">05</div>
+        <div class="service-line"></div>
+        <div class="service-dot"></div>
+        <div class="service-card">
+          <h3>Outsourcing & Backoffice</h3>
+          <p>Decades of offshore experience. State-of-art backend processing teams.</p>
+        </div>
+      </div>
+      <!-- Row 3 -->
+      <div class="service-row">
+        <div class="service-num">03</div>
+        <div class="service-line"></div>
+        <div class="service-dot"></div>
+        <div class="service-card">
+          <h3>ERP Solutions</h3>
+          <p>Full lifecycle ERP — selection, implementation, go-live support and training.</p>
+        </div>
+      </div>
+      <div class="service-row">
+        <div class="service-num">06</div>
+        <div class="service-line"></div>
+        <div class="service-dot"></div>
+        <div class="service-card">
+          <h3>RPA Solutions</h3>
+          <p>ROI-focused robotic process automation. Identify, implement and scale.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">03</div>
+  </div>
+
+  <!-- ═══════════ SLIDE 4 — WEB DEVELOPMENT ═══════════ -->
+  <div class="slide" data-slide="4">
+    <svg class="corner-tl" viewBox="0 0 120 200"><line x1="10" y1="180" x2="60" y2="10" class="stripe-blue"/><line x1="24" y1="180" x2="74" y2="10" class="stripe-magenta"/></svg>
+    <svg class="corner-br" viewBox="0 0 120 200"><line x1="10" y1="180" x2="60" y2="10" class="stripe-blue"/><line x1="24" y1="180" x2="74" y2="10" class="stripe-magenta"/></svg>
+
+    <div class="tag">Web Development Services</div>
+    <h2 class="title">What The Web Team Offers</h2>
+
+    <div class="hub-container">
+      <!-- Center -->
+      <div class="hub-center">🔑</div>
+
+      <!-- SVG lines -->
+      <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:1;" viewBox="0 0 900 480">
+        <line x1="450" y1="240" x2="280" y2="80" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+        <line x1="450" y1="240" x2="160" y2="240" stroke="#a855f7" stroke-width="3" stroke-linecap="round"/>
+        <line x1="450" y1="240" x2="280" y2="400" stroke="#f43f5e" stroke-width="3" stroke-linecap="round"/>
+        <line x1="450" y1="240" x2="620" y2="80" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+        <line x1="450" y1="240" x2="740" y2="240" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+        <line x1="450" y1="240" x2="620" y2="400" stroke="#a855f7" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+
+      <!-- Spokes -->
+      <div class="spoke" style="left:140px;top:20px;">
+        <div class="spoke-icon" style="background:linear-gradient(135deg,#6366f1,#3b82f6);">⚙️</div>
+        <h4>Custom Web Application</h4>
+        <p>Tailor-made apps using modern frameworks with scalable architecture, API integrations, and real-time features.</p>
+      </div>
+      <div class="spoke" style="left:20px;top:180px;">
+        <div class="spoke-icon" style="background:linear-gradient(135deg,#a855f7,#ec4899);">🎨</div>
+        <h4>UI/UX Design</h4>
+        <p>User research, prototyping, and design systems aimed at intuitive experiences and better conversion outcomes.</p>
+      </div>
+      <div class="spoke" style="left:140px;top:360px;">
+        <div class="spoke-icon" style="background:linear-gradient(135deg,#f43f5e,#fb923c);">📱</div>
+        <h4>Responsive Development</h4>
+        <p>Mobile-first, cross-browser builds that stay consistent and fast across screen sizes.</p>
+      </div>
+      <div class="spoke" style="right:140px;top:20px;">
+        <div class="spoke-icon" style="background:linear-gradient(135deg,#f59e0b,#f97316);">📦</div>
+        <h4>Fullstack Solutions</h4>
+        <p>Frontend, backend, APIs, database design, and authentication in one end-to-end delivery scope.</p>
+      </div>
+      <div class="spoke" style="right:20px;top:180px;">
+        <div class="spoke-icon" style="background:linear-gradient(135deg,#3b82f6,#06b6d4);">☁️</div>
+        <h4>Cloud Deployment</h4>
+        <p>Deployment on AWS, Vercel, and cloud platforms with CI/CD, auto-scaling, and monitoring.</p>
+      </div>
+      <div class="spoke" style="right:140px;top:360px;">
+        <div class="spoke-icon" style="background:linear-gradient(135deg,#a855f7,#6366f1);">🛡️</div>
+        <h4>Security First Development</h4>
+        <p>Penetration testing, secure coding, and compliance-minded engineering are built into the delivery promise.</p>
+      </div>
+    </div>
+    <div class="slide-num">04</div>
+  </div>
+
+  <!-- ═══════════ SLIDE 5 — TESTIMONIALS ═══════════ -->
+  <div class="slide" data-slide="5">
+    <svg class="corner-tl" viewBox="0 0 120 200"><line x1="10" y1="180" x2="60" y2="10" class="stripe-blue"/><line x1="24" y1="180" x2="74" y2="10" class="stripe-magenta"/></svg>
+    <svg class="corner-br" viewBox="0 0 120 200"><line x1="10" y1="180" x2="60" y2="10" class="stripe-blue"/><line x1="24" y1="180" x2="74" y2="10" class="stripe-magenta"/></svg>
+
+    <div class="tag">Client Success</div>
+    <h2 class="title">What Clients <span class="highlight">Say</span></h2>
+    <p class="subtitle">Real feedback from businesses that trusted SleeveTechs to deliver.</p>
+
+    <div class="grid-3" style="flex:1;min-height:0;align-content:center;">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"SleeveTechs has been providing excellent Virtual CIO Services to Compass, to supplement in-house management of IT operations, with the best possible ROI and cost to benefit ratio."</p>
+        <div class="author">Andrea Mandara</div>
+        <div class="role">Finance Manager, CompassLog.com</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Sleevetechs is our go-to partner for all things tech. By delegating our IT workloads to their skilled team, we are able to focus more on our core business."</p>
+        <div class="author">Mai Lakkis</div>
+        <div class="role">Public Relations Manager, ark3000.com</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"While StoreNDeliver.com was being formed, it established its strong foundations utilizing the best of technology thanks to excellent consultancy services received from SleeveTechs."</p>
+        <div class="author">Aslihan Oztopcu</div>
+        <div class="role">Head of E-Commerce, StoreNDeliver</div>
+      </div>
+    </div>
+    <div class="slide-num">05</div>
+  </div>
+
+  <!-- ═══════════ SLIDE 6 — CONTACT ═══════════ -->
+  <div class="slide" data-slide="6">
+    <svg class="corner-tl" viewBox="0 0 120 200"><line x1="10" y1="180" x2="60" y2="10" class="stripe-blue"/><line x1="24" y1="180" x2="74" y2="10" class="stripe-magenta"/></svg>
+    <svg class="corner-br" viewBox="0 0 120 200"><line x1="10" y1="180" x2="60" y2="10" class="stripe-blue"/><line x1="24" y1="180" x2="74" y2="10" class="stripe-magenta"/></svg>
+
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;">
+      <div class="tag">Get In Touch</div>
+      <h2 class="title">Let's Build Something<br><span class="highlight">Great Together</span></h2>
+      <p class="subtitle">Ready to transform your digital presence? Let's start the conversation.</p>
+
+      <div class="cta-contact">
+        <div class="cta-box">
+          <div class="icon">📧</div>
+          <div class="label">Email</div>
+          <div class="value">info@sleevetechs.com</div>
+        </div>
+        <div class="cta-box">
+          <div class="icon">📞</div>
+          <div class="label">Phone</div>
+          <div class="value">+91 80-46472444</div>
+        </div>
+        <div class="cta-box">
+          <div class="icon">🌐</div>
+          <div class="label">Website</div>
+          <div class="value">sleevetechs.com</div>
+        </div>
+      </div>
+
+      <div style="margin-top:36px;display:flex;gap:16px;">
+        <a href="mailto:info@sleevetechs.com" style="padding:14px 36px;border-radius:50px;background:linear-gradient(135deg,var(--blue),var(--magenta));color:white;font-weight:700;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">📧 Get in Touch</a>
+        <a href="https://sleevetechs.com" style="padding:14px 36px;border-radius:50px;border:2px solid #d1d5db;color:var(--dark);font-weight:700;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">Visit Website →</a>
+      </div>
+    </div>
+    <div class="slide-num">06</div>
+  </div>
+
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <button onclick="prev()">←</button>
+  <div class="counter" id="counter">1 / 6</div>
+  <button onclick="next()">→</button>
+</div>
+
+<script>
+  let current = 1;
+  const total = document.querySelectorAll('.slide').length;
+
+  function show(n) {
+    if (n < 1 || n > total) return;
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+    current = n;
+    document.getElementById('counter').textContent = `${current} / ${total}`;
+  }
+
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); }
+  });
+</script>
+</body>
+</html>
