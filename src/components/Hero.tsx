@@ -123,7 +123,7 @@ export default function Hero() {
           className="text-base sm:text-lg md:text-xl text-brand-gray max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed px-1"
         >
           We help businesses streamline operations, enhance security, and accelerate growth 
-          with innovative technology solutions and cutting-edge web development.
+          with innovative technology solutions and cutting-edge web development
         </motion.p>
 
         {/* CTA Buttons */}
