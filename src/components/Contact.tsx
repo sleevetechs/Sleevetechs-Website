@@ -100,7 +100,7 @@ export default function Contact() {
             className="lg:col-span-3"
           >
             <div className="p-5 sm:p-8 md:p-10 rounded-3xl bg-white border border-gray-100 shadow-xl shadow-brand-blue/5">
-              <form action="https://formsubmit.co/rifaz.ali@sleevetechs.com" method="POST" className="space-y-5 sm:space-y-6">
+              <form action="https://formsubmit.co/info@sleevetechs.com" method="POST" className="space-y-5 sm:space-y-6">
                 <input type="hidden" name="_subject" value="New contact request from Sleevetechs website" />
                 <input type="hidden" name="_template" value="table" />
                 <input type="hidden" name="_captcha" value="false" />
