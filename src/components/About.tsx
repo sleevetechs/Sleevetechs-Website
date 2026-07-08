@@ -33,9 +33,7 @@ export default function About() {
             We Carry <span className="gradient-text">Tech</span> on Our Sleeves
           </h2>
           <p className="text-base sm:text-lg text-brand-gray max-w-2xl mx-auto leading-relaxed">
-            The passionate carry their heart on their sleeves. We carry Tech on our Sleeves. 
-            Born from a security-first mindset, we are now expanding into the world of 
-            web development to offer comprehensive digital solutions.
+            At Sleevetechs, technology isn't just what we do, it's who we are. We carry tech on our sleeves, bringing a security-first mindset to everything we build. From modern websites to custom digital solutions, we help businesses create experiences that are secure, scalable, and impactful.
           </p>
         </motion.div>
 
@@ -110,7 +108,7 @@ export default function About() {
 
               <div className="rounded-[2rem] border border-brand-blue/10 bg-brand-blue/5 p-6 text-brand-dark shadow-sm">
                 <p className="text-sm sm:text-base leading-relaxed">
-                  Over 25 years leading enterprise cybersecurity, IT infrastructure and digital transformation across the Middle East, Europe, Asia and North America. He holds senior cybersecurity leadership roles, oversees global IT and cybersecurity operations, and advises on overall technology transformation strategies across multiple domains.
+                  Over 25 years leading IT, Enterprise Cybersecurity, and digital transformation across the Middle East, Europe, Asia and North America. He holds senior cybersecurity leadership roles, oversees global IT and cybersecurity operations, and advises on overall technology transformation strategies across multiple domains.
                 </p>
                 <p className="mt-4 text-sm sm:text-base leading-relaxed">
                   His experience spans CIO/CISO advisory, cybersecurity strategy and risk management, OT/ICS/SCADA security, SOC advisory, AI-driven security operations, cloud security and zero trust architecture, digital transformation and IT modernization, and business continuity.
@@ -153,7 +151,7 @@ export default function About() {
         </motion.div>
 
         {/* Journey Timeline */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 1 }}
@@ -162,7 +160,7 @@ export default function About() {
           <h3 className="text-2xl font-bold text-brand-dark text-center mb-10 sm:mb-12">Our Journey</h3>
           <div className="relative">
             {/* Line */}
-            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-blue/20 via-brand-magenta/20 to-brand-blue/20 hidden md:block" />
+            {/* <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-blue/20 via-brand-magenta/20 to-brand-blue/20 hidden md:block" />
             
             <div className="grid md:grid-cols-3 gap-10 md:gap-8">
               {[
@@ -170,14 +168,14 @@ export default function About() {
                 { year: '2019', title: 'Expanded', desc: 'Added ERP, RPA, and vCIO services' },
                 { year: '2025', title: 'Web Dev Era', desc: 'Launching cutting-edge web development services' },
               ].map((item, i) => (
-                <motion.div
-                  key={item.year}
+                <motion.div */}
+                  {/* key={item.year}
                   initial={{ opacity: 0, y: 30 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.6, delay: 1.2 + i * 0.15 }}
                   className="relative text-center"
-                >
-                  <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-brand-blue to-brand-magenta flex items-center justify-center text-white font-bold text-lg mb-4 shadow-lg shadow-brand-blue/20 z-10 relative">
+                > */}
+                  {/* <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-brand-blue to-brand-magenta flex items-center justify-center text-white font-bold text-lg mb-4 shadow-lg shadow-brand-blue/20 z-10 relative">
                     {item.year}
                   </div>
                   <h4 className="text-xl font-bold text-brand-dark mb-2">{item.title}</h4>
@@ -186,7 +184,7 @@ export default function About() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

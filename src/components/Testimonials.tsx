@@ -6,6 +6,7 @@ import kabeerAvatar from '../assets/Kabeer Karnad.png';
 import andreaAvatar from '../assets/andrea.png';
 import mayAvatar from '../assets/may.png';
 import aslihanAvatar from '../assets/Aslihan.png';
+import ashrafAvatar from '../assets/ashraf.png';
 
 const testimonials = [
   {
@@ -29,10 +30,15 @@ const testimonials = [
   {
     quote: 'We would like to express our appreciation for the excellent service your company has consistently provided. From the start, the engagement has been professional, responsive, and well-managed, with high-quality solutions delivered on time and strong support throughout. We are impressed by your team’s expertise, customer focus, and commitment to delivering reliable IT services. We look forward to establishing a continued service contract and would gladly recommend your company to others seeking a trusted IT partner. Thank you for your exceptional service, and we look forward to continuing our partnership.',
     name: 'Kabeer Karnad',
-    title: 'General Manager, Kohis Logistics',
+    title: 'General Manager, Kuhais Logistics',
     image: kabeerAvatar,
   },
-  
+  {
+    quote: 'Working with SleeveTechs has been a valuable extension of our technology transformation journey. Their deep technical expertise, strategic guidance, and security-first approach played an important role in helping us adopt AI-driven cybersecurity capabilities with confidence. We appreciate their commitment to delivering solutions that create lasting business value.',
+    name: 'Mohammed Ashraf',
+    title: 'CSSO at Expertise',
+    image: ashrafAvatar,
+  },
 ];
 
 export default function Testimonials() {

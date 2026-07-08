@@ -80,7 +80,7 @@ export default function Contact() {
                   Let's discuss how we can help transform your business with our technology solutions.
                 </p>
                 <a 
-                  href="https://calendly.com/sleevetechs" 
+                  
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex w-full sm:w-auto justify-center items-center gap-2 text-sm font-semibold bg-white text-brand-blue px-5 py-2.5 rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105"

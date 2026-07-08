@@ -134,10 +134,10 @@ export default function Clients() {
           className="text-center mb-12 sm:mb-16 lg:mb-20"
         >
           <span className="inline-block px-4 py-1.5 rounded-full bg-brand-blue/10 text-brand-blue text-sm font-semibold mb-6">
-            Trusted By
+            Trusted
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-brand-dark mb-4 sm:mb-6 leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-            Our <span className="gradient-text">Partners</span>
+            Trusted <span className="gradient-text">Relationships</span>
           </h2>
           <p className="text-base sm:text-lg text-brand-gray max-w-2xl mx-auto leading-relaxed">
             We collaborate with leading technology providers, cybersecurity vendors, and trusted organizations to deliver secure, innovative, and future-ready digital solutions.

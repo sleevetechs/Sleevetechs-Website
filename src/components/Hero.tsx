@@ -80,7 +80,7 @@ export default function Hero() {
           className="inline-flex max-w-[92vw] items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-white/80 backdrop-blur-sm border border-brand-blue/10 shadow-lg shadow-brand-blue/5 mb-8 sm:mb-10"
         >
           <Code size={16} className="text-brand-magenta" />
-          <span className="text-xs sm:text-sm font-medium text-brand-dark">Security Experts Expanding to Web Development</span>
+          <span className="text-xs sm:text-sm font-medium text-brand-dark">Your Secure Technology Growth Partner</span>
         </motion.div>
 
         {/* Main Title */}
@@ -157,9 +157,9 @@ export default function Hero() {
           className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 max-w-3xl mx-auto"
         >
           {[
-            { value: '10+', label: 'Years Experience' },
-            { value: '200+', label: 'Projects Delivered' },
-            { value: '50+', label: 'Security Audits' },
+            { value: '50+', label: 'Years Experience' },
+            { value: '15+', label: 'Services' },
+            { value: '12+', label: 'Countries Served' },
             { value: '99%', label: 'Client Satisfaction' },
           ].map((stat, i) => (
             <motion.div
