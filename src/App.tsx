@@ -145,10 +145,25 @@ function AppRoutes() {
   );
 }
 
+function RouteRestorer() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const redirectPath = params.get('p');
+
+    if (redirectPath && location.pathname === '/') {
+      window.history.replaceState({}, '', redirectPath);
+    }
+  }, [location.pathname]);
+
+  return <AppRoutes />;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
-      <AppRoutes />
+      <RouteRestorer />
     </BrowserRouter>
   );
 }
