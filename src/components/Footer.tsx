@@ -136,7 +136,7 @@ export default function Footer() {
         {/* Bottom */}
         <div className="pt-8 border-t border-brand-dark/10 flex flex-col sm:flex-row items-center justify-between gap-5 text-center sm:text-left">
           <p className="text-sm text-brand-dark flex flex-wrap justify-center sm:justify-start items-center gap-1">
-            Copyright 2015-{new Date().getFullYear()} Sleeve Techs.  All Rights Reserved.
+            Copyright {new Date().getFullYear()} Sleeve Techs.  All Rights Reserved.
           </p>
           <button
             onClick={scrollToTop}
