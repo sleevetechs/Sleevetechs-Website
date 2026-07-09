@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -162,8 +162,8 @@ function RouteRestorer() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <RouteRestorer />
-    </BrowserRouter>
+    <HashRouter>
+      <AppRoutes />
+    </HashRouter>
   );
 }

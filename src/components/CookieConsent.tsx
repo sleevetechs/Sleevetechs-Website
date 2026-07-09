@@ -51,7 +51,7 @@ export default function CookieConsent() {
                 <p className="text-xs text-brand-gray leading-relaxed mb-4">
                   We use cookies to enhance your browsing experience and analyze site traffic. 
                   By clicking "Accept", you consent to our use of cookies.{' '}
-                  <a href="/privacy-policy" className="underline hover:text-brand-blue">Learn more</a>
+                  <a href="#/privacy-policy" className="underline hover:text-brand-blue">Learn more</a>
                 </p>
                 <div className="flex gap-3">
                   <button
